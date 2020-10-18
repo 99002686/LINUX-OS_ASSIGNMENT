@@ -18,7 +18,7 @@ void* thread_handler(void* *arg)
     {
         for(iter = arr[SIZE]*MUL; iter<((arr[SIZE]+1)*MUL); iter++)
         {
-           printf("thread[%d]: %d - %d\n", arr[SIZE], iter, *max1);
+           //printf("thread[%d]: %d - %d\n", arr[SIZE], iter, *max1);
             if(arr[iter] > *max1)
             {
                 *max1 = arr[iter];
@@ -59,7 +59,7 @@ int main(void)
     for(iter=0; iter<THREAD_S; iter++)
     {
         pthread_join(threads[iter],(void *) &retval);
-        printf("%d = %d\n", iter, *retval);
+        //printf("%d = %d\n", iter, *retval);
         if(choice)
         {
             if(*retval > max)
