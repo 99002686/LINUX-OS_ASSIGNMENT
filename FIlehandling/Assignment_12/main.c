@@ -19,7 +19,7 @@ struct rlimit maxResourceAllocation(void)
     return limitproc;
 }
 
-struct rlimit getNewResource(void)
+void getNewResource(void)
 {
     struct rlimit limitproc, newProc;
     printf("\nEnter New Soft Limit:");
@@ -39,7 +39,6 @@ struct rlimit getNewResource(void)
     }
     printf("New limits soft limit= %ld \t hard limit= %ld \n", 
         newProc.rlim_cur, newProc.rlim_max);
-    return newProc;
 }
 
 int main()
