@@ -5,9 +5,9 @@
 
 int main()
 {
-    int childProc1, childProc2, childProc3, childProc4, status;
-    childProc1 = fork();
-    if(childProc1==0)
+    int childProc[3], status;
+    childProc[0] = fork();
+    if(childProc[0]==0)
     {
         char *buffer[] = { "gcc","-c","-Iinclude","src/factorial.c",
                             "src/flip.c",
@@ -25,19 +25,19 @@ int main()
                             "src/test.c" ,NULL };
         execv("/usr/bin/gcc", buffer);
     }
-    else if(childProc1 < 0)
+    else if(childProc[0] < 0)
     {
-        perror("childProc1 Error");
+        perror("childProc[0] Error");
         exit(0);
     }
     else
     {
-        printf("Inside childProc1\n");
-        waitpid(childProc1, &status, 0);
-        childProc2 = fork();
+        printf("Inside childProc[0]\n");
+        waitpid(childProc[0], &status, 0);
+        childProc[1] = fork();
     }
 
-    if(childProc2 == 0)
+    if(childProc[1] == 0)
     {
         char *buffer[] = {"ar", "rc","libstatic.a","factorial.o",
                             "flip.o",
@@ -55,51 +55,48 @@ int main()
                             "test.o", NULL };
         execv("/usr/bin/ar", buffer);
     }
-    else if(childProc2 < 0)
+    else if(childProc[1] < 0)
     {
-        perror("Error childProc2");
+        perror("Error childProc[1]");
         exit(1);
     }    
     else
     {
-        printf("Inside childProc2\n");
-        waitpid(childProc2, &status, 0);
-        childProc3 = fork();
+        printf("Inside childProc[1]\n");
+        waitpid(childProc[1], &status, 0);
+        childProc[2] = fork();
     }
 
-    if(childProc3 == 0)
+    if(childProc[2] == 0)
     {
         char *buffer[] = {"gcc","test.o","-L.","-lstatic","-o","ALLFUN.out",NULL};
         execv("/usr/bin/gcc", buffer);
     }
-    else if(childProc3 < 0)
+    else if(childProc[2] < 0)
     {
-        perror("Error childProc3");
+        perror("Error childProc[2]");
         exit(2);
     }    
     else
     {
-        printf("Inside childProc3\n");
-        waitpid(childProc3, &status, 0);
-         childProc4 = fork();
+        printf("Inside childProc[2]\n");
+        waitpid(childProc[2], &status, 0);
+         childProc[3] = fork();
     }
 
-    if(childProc4 == 0)
+    if(childProc[3] == 0)
     {
        execl("ALLFUN.out","./ALLFUN.out",NULL);
     }
-    else if(childProc4 < 0)
+    else if(childProc[3] < 0)
     {
-        perror("Error childProc4");
+        perror("Error childProc[3]");
         exit(3);
     }    
     else
     {
-        printf("Inside childProc4\n");
-        waitpid(childProc3, &status, 0);
-         childProc4 = fork();
+        printf("Inside childProc[3]\n");
+        waitpid(childProc[3], &status, 0);
     }
-    
-
     return 0;
 }
